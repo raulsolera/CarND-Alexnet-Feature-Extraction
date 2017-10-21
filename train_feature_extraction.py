@@ -57,7 +57,6 @@ def get_sample(X_data, y_data, sample_size):
 n_mini_train = 500
 n_mini_valid = 100
 X_mini_train, y_mini_train = get_sample(X_train, y_train, n_mini_train)
-X_mini_valid, y_mini_valid = get_sample(X_valid, y_valid, n_mini_valid)
 
 # Function to measure accuracy
 def eval_on_data(X, y, sess):
@@ -80,7 +79,7 @@ with tf.Session() as sess:
 
     for i in range(EPOCHS):
         # training
-        X_train, y_train = shuffle(X_train, y_train)
+        X_mini_train, y_mini_train = shuffle(X_mini_train, y_mini_train)
         t0 = time.time()
         for offset in range(0, X_train.shape[0], BATCH_SIZE):
             end = offset + BATCH_SIZE
