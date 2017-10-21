@@ -20,10 +20,10 @@ X_data, y_data = train['features'], train['labels']
 X_train, X_valid, y_train, y_valid = train_test_split(X_data, y_data, test_size=0.20, random_state=42)
 
 # TODO: Define placeholders and resize operation.
-x = tf.placeholder(tf.float32, (None, 32, 32, 3))
-resized = tf.image.resize_images(x, [227, 227])
-y = tf.placeholder(tf.int32, (None))
-one_hot_y = tf.one_hot(y, 43)
+features = tf.placeholder(tf.float32, (None, 32, 32, 3))
+resized = tf.image.resize_images(features, [227, 227])
+labels = tf.placeholder(tf.int32, (None))
+one_hot_y = tf.one_hot(labels, 43)
 
 # TODO: pass placeholder as first argument to `AlexNet`.
 fc7 = AlexNet(resized, feature_extract=True)
@@ -83,7 +83,7 @@ with tf.Session() as sess:
         t0 = time.time()
         for offset in range(0, X_train.shape[0], BATCH_SIZE):
             end = offset + BATCH_SIZE
-            sess.run(training_op, feed_dict={x: X_train[offset:end], y: y_train[offset:end]})
+            sess.run(training_op, feed_dict={features: X_mini_train[offset:end], labels: y_mini_train[offset:end]})
 
         val_loss, val_acc = eval_on_data(X_valid, y_valid, sess)
         print("Epoch", i+1)
